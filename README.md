@@ -1,0 +1,1 @@
+Paths to be used with hs_auth.

@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/unicsmcr/hs_auth_api_ts.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "author": "HN",
   "license": "ISC",
   "bugs": {
@@ -17,7 +20,6 @@
   },
   "homepage": "https://github.com/unicsmcr/hs_auth_api_ts#readme",
   "devDependencies": {
-    "express": "^4.17.1",
     "request-promise-native": "^1.0.8",
     "typescript": "^3.7.5"
   }
