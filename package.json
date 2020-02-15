@@ -1,9 +1,11 @@
 {
   "name": "hs_auth_api_ts",
   "version": "1.0.0",
-  "description": "paths for hs_auth platform",
-  "main": "index.ts",
+  "description": "API request paths for hs_auth platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,13 +15,14 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "author": "HN",
-  "license": "ISC",
+  "author": "unicsmcr",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/unicsmcr/hs_auth_api_ts/issues"
   },
   "homepage": "https://github.com/unicsmcr/hs_auth_api_ts#readme",
   "devDependencies": {
+    "@types/request-promise-native": "^1.0.17",
     "request-promise-native": "^1.0.8",
     "typescript": "^3.7.5"
   }
