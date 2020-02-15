@@ -1,5 +1,5 @@
 {
-  "name": "hs_auth_api_ts",
+  "name": "@unicsmcr/hs_auth_api_ts",
   "version": "1.0.0",
   "description": "API request paths for hs_auth platform",
   "main": "dist/index.js",
@@ -13,7 +13,8 @@
     "url": "git+https://github.com/unicsmcr/hs_auth_api_ts.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
   },
   "author": "unicsmcr",
   "license": "MIT",
