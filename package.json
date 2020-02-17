@@ -8,16 +8,12 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/unicsmcr/hs_auth_api_ts.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/",
-    "access": "public"
-  },
   "author": "unicsmcr",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unicsmcr/hs_auth_client_ts.git"
+  },
   "bugs": {
     "url": "https://github.com/unicsmcr/hs_auth_api_ts/issues"
   },
