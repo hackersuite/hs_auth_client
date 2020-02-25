@@ -1,30 +1,46 @@
 import * as req from "request-promise-native";
 
-import { RequestUser, Team } from "./types";
+export type RequestUser = {
+  authId: string;
+  name: string;
+  email: string;
+  email_verified: boolean;
+  authLevel: number;
+  team?: string;
+};
 
+export type Team = {
+  _id: string;
+  name: string;
+  creator: string;
+  table_no?: number;
+}
 
-export const getCurrentUser = async (token: string): Promise<RequestUser> => {
+export const getCurrentUser = async (token: string, originalUrl: string): Promise<RequestUser> => {
   let res: string;
   try {
     res =  await req.get(`${process.env.AUTH_URL}/api/v1/users/me`, {
       headers: {
-        Authorization: `${token}`,
+        Authorization: token,
+        Referer: originalUrl
       }
     })
-  } catch (err) { throw err; }
+  } catch (err) { 
+    throw new Error(err);
+  }
 
-  const user: any  = JSON.parse(res);
-  if (user.error && user.status >= 400 )
-    throw user.error;
+  const user = JSON.parse(res);
+  if (user.error && user.status >= 400 ) {
+    throw new Error(user.error);
+  }
 
   return {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    password: user.password,
-    email_verified: user.email_verified,
-    auth_level: user.auth_level,
-    team: user.team
+    authId: user.user._id,
+    name: user.user.name,
+    email: user.user.email,
+    email_verified: user.user.email_verified,
+    authLevel: user.user.auth_level,
+    team: user.user.team
   };
 }
 
@@ -39,17 +55,16 @@ export const getAllUsers = async (token: string): Promise<RequestUser[]> => {
     });
   } catch (err) { throw err; }
 
-  const users: any = JSON.parse(res);
-  if (users.error && users.status >= 400 ) { throw users.error; }
+  const users = JSON.parse(res);
+  if (users.error && users.status >= 400 ) { throw new Error(users.error); }
   
-  return users.map( (user: RequestUser) => (
+  return users.users.map( (user: any) => (
     {
-      _id: user._id,
+      authId: user._id,
       name: user.name,
       email: user.email,
-      password: user.password,
       email_verified: user.email_verified,
-      auth_level: user.auth_level,
+      auth_level: user.authLevel,
       team: user.team
     }
   ));
@@ -76,16 +91,29 @@ export const getTeams = async (token: string): Promise<Team[]> => {
         Authorization: `${token}`,
       }
     })
-  } catch (err) { throw err; }
+  } catch (err) { throw new Error(err); }
 
   const teams: any = JSON.parse(res);
-  if (teams.error && teams.status >= 400 ) { throw teams.error; }
+  if (teams.error && teams.status >= 400 ) { throw new Error(teams.error); }
 
-  return teams.map( (team: Team) => (
+  return teams.map( (team: any) => (
     {
-      _id: team._id,
-      name: team.name,
-      creator: team.creator
+      _id: team.team._id,
+      name: team.team.name,
+      creator: team.team.creator,
+      table_no: team.team.table_no
     }
   ))
+}
+
+export const getTeam = async (token: string, teamCode: string): Promise<Team> => {
+  const allTeams: Team[] = await getTeams(token);
+
+  const team: Team | undefined = allTeams.find( team => team._id === teamCode)
+
+  if (team === undefined) {
+    throw new Error("Team not found")
+  }
+
+  return team;
 }

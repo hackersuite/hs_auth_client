@@ -1,5 +1,5 @@
 {
-  "name": "@unicsmcr/hs_auth_api_ts",
+  "name": "hs_auth_api_ts",
   "version": "1.0.0",
   "description": "API request paths for hs_auth platform",
   "main": "dist/index.js",
@@ -26,5 +26,8 @@
     "@types/request-promise-native": "^1.0.17",
     "request-promise-native": "^1.0.8",
     "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "request": "^2.88.2"
   }
 }
