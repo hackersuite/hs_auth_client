@@ -1,11 +1,32 @@
 import * as req from "request-promise-native";
 
+export const enum AuthLevels {
+  // NOTE: the auth levels must be in ascending order
+  Applicant,
+  Attendee,
+  Volunteer,
+  Organiser
+}
+const stringAuthLevels = new Map<string, AuthLevels>([
+  ["applicant", AuthLevels.Applicant],
+  ["attendee", AuthLevels.Attendee],
+  ["volunteer", AuthLevels.Volunteer],
+  ["organiser", AuthLevels.Organiser]
+]);
+function convertAuthLevel(authLevel: string): AuthLevels {
+  if (stringAuthLevels.has(authLevel)) {
+    return stringAuthLevels.get(authLevel) as AuthLevels
+  } else {
+    throw new Error("Auth Level Unknown");
+  }
+}
+
 export type RequestUser = {
   authId: string;
   name: string;
   email: string;
   email_verified: boolean;
-  authLevel: string;
+  authLevel: AuthLevels;
   team?: string;
 };
 
@@ -16,7 +37,7 @@ export type Team = {
   table_no?: number;
 }
 
-export const getCurrentUser = async (token: string, originalUrl: string): Promise<RequestUser> => {
+export async function getCurrentUser(token: string, originalUrl: string): Promise<RequestUser> {
   let res: string;
   try {
     res = await req.get(`${process.env.AUTH_URL}/api/v1/users/me`, {
@@ -39,18 +60,17 @@ export const getCurrentUser = async (token: string, originalUrl: string): Promis
     name: user.user.name,
     email: user.user.email,
     email_verified: user.user.email_verified,
-    authLevel: user.user.auth_level,
+    authLevel: convertAuthLevel(user.user.auth_level),
     team: user.user.team
   };
 }
 
-
-export const getAllUsers = async (token: string): Promise<RequestUser[]> => {
+export async function getAllUsers(token: string): Promise<RequestUser[]> {
   let res;
   try {
     res = await req.get(`${process.env.AUTH_URL}/api/v1/users`, {
       headers: {
-        Authorization: `${token}`
+        Authorization: token
       }
     });
   } catch (err) { throw err; }
@@ -64,31 +84,31 @@ export const getAllUsers = async (token: string): Promise<RequestUser[]> => {
       name: user.name,
       email: user.email,
       email_verified: user.email_verified,
-      auth_level: user.authLevel,
+      auth_level: convertAuthLevel(user.authLevel),
       team: user.team
     }
   ));
 }
 
-export const putCurrentUser = async (name: string, token: string): Promise<void> => {
+export async function putCurrentUser(name: string, token: string): Promise<void> {
   const res = await req.put(`${process.env.AUTH_URL}/api/v1/users/me`, {
     headers: {
-      Authorization: `${token}`
+      Authorization: token
     },
     body: {
-      name: `${name}`
+      name: name
     }
   });
 
   if (res.error && res.status >= 400) { throw res.error; }
 }
 
-export const getTeams = async (token: string): Promise<Team[]> => {
+export async function getTeams(token: string): Promise<Team[]> {
   let res: string;
   try {
     res = await req.get(`${process.env.AUTH_URL}/api/v1/teams/`, {
       headers: {
-        Authorization: `${token}`,
+        Authorization: token,
       }
     })
   } catch (err) { throw new Error(err); }
@@ -104,7 +124,7 @@ export const getTeams = async (token: string): Promise<Team[]> => {
   }));
 }
 
-export const getTeam = async (token: string, teamCode: string): Promise<Team> => {
+export async function getTeam(token: string, teamCode: string): Promise<Team> {
   const allTeams: Team[] = await getTeams(token);
 
   const team: Team | undefined = allTeams.find(team => team._id === teamCode)
