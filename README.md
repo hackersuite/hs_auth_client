@@ -1,8 +1,8 @@
-# HS_CLIENT_AUTH_TS
+# HS_AUTH_CLIENT
 
 ## Use
 ```
-$ npm install hs_client_auth_ts
+$ npm install @unicsmcr/hs_auth_client
 ```
 ## Provides
 ### Two Exported TypeScript Type Definitions
@@ -12,7 +12,7 @@ $ npm install hs_client_auth_ts
   name: string
   email: string
   email_verified: boolean
-  authLevel: number
+  authLevel: AuthLevels
   team?: string
 
 - Team
