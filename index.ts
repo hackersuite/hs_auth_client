@@ -1,4 +1,4 @@
-import * as req from "request-promise-native";
+import axios, { AxiosResponse } from "axios";
 
 export const enum AuthLevels {
   // NOTE: the auth levels must be in ascending order
@@ -38,9 +38,9 @@ export type Team = {
 }
 
 export async function getCurrentUser(token: string, originalUrl: string): Promise<RequestUser> {
-  let res: string;
+  let res: AxiosResponse<any>;
   try {
-    res = await req.get(`${process.env.AUTH_URL}/api/v1/users/me`, {
+    res = await axios.get(`${process.env.AUTH_URL}/api/v1/users/me`, {
       headers: {
         Authorization: token,
         Referer: originalUrl
@@ -50,7 +50,7 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
     throw new Error(err);
   }
 
-  const user = JSON.parse(res);
+  const user = res.data;
   if (user.error && user.status >= 400) {
     throw new Error(user.error);
   }
@@ -66,16 +66,16 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
 }
 
 export async function getAllUsers(token: string): Promise<RequestUser[]> {
-  let res;
+  let res: AxiosResponse<any>;
   try {
-    res = await req.get(`${process.env.AUTH_URL}/api/v1/users`, {
+    res = await axios.get(`${process.env.AUTH_URL}/api/v1/users`, {
       headers: {
         Authorization: token
       }
     });
   } catch (err) { throw err; }
 
-  const users = JSON.parse(res);
+  const users = res.data;
   if (users.error && users.status >= 400) { throw new Error(users.error); }
 
   return users.users.map((user: any) => (
@@ -84,14 +84,14 @@ export async function getAllUsers(token: string): Promise<RequestUser[]> {
       name: user.name,
       email: user.email,
       email_verified: user.email_verified,
-      auth_level: convertAuthLevel(user.authLevel),
+      authLevel: convertAuthLevel(user.auth_level),
       team: user.team
     }
   ));
 }
 
 export async function putCurrentUser(name: string, token: string): Promise<void> {
-  const res = await req.put(`${process.env.AUTH_URL}/api/v1/users/me`, {
+  const res: AxiosResponse<any> = await axios.put(`${process.env.AUTH_URL}/api/v1/users/me`, {
     headers: {
       Authorization: token
     },
@@ -100,20 +100,20 @@ export async function putCurrentUser(name: string, token: string): Promise<void>
     }
   });
 
-  if (res.error && res.status >= 400) { throw res.error; }
+  if (res.data.error && res.status >= 400) { throw res.data.error; }
 }
 
 export async function getTeams(token: string): Promise<Team[]> {
-  let res: string;
+  let res: AxiosResponse<any>;
   try {
-    res = await req.get(`${process.env.AUTH_URL}/api/v1/teams/`, {
+    res = await axios.get(`${process.env.AUTH_URL}/api/v1/teams/`, {
       headers: {
         Authorization: token,
       }
     })
   } catch (err) { throw new Error(err); }
 
-  const teams: any = JSON.parse(res);
+  const teams: any = res.data;
   if (teams.error && teams.status >= 400) { throw new Error(teams.error); }
 
   return teams.map((team: any) => ({

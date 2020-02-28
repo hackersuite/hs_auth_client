@@ -12,18 +12,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unicsmcr/hs_auth_client_ts.git"
+    "url": "git+https://github.com/unicsmcr/hs_auth_client.git"
   },
   "bugs": {
-    "url": "https://github.com/unicsmcr/hs_auth_api_ts/issues"
+    "url": "https://github.com/unicsmcr/hs_auth_client/issues"
   },
-  "homepage": "https://github.com/unicsmcr/hs_auth_api_ts#readme",
+  "homepage": "https://github.com/unicsmcr/hs_auth_client#readme",
   "devDependencies": {
-    "@types/request-promise-native": "^1.0.17",
-    "request-promise-native": "^1.0.8",
+    "@types/node": "^13.7.6",
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "request": "^2.88.2"
+    "axios": "^0.19.2"
   }
 }
