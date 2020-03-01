@@ -2,12 +2,14 @@ import axios, { AxiosResponse } from "axios";
 
 export const enum AuthLevels {
   // NOTE: the auth levels must be in ascending order
+  Unverified,
   Applicant,
   Attendee,
   Volunteer,
   Organiser
 }
 const stringAuthLevels = new Map<string, AuthLevels>([
+  ["unverified", AuthLevels.Unverified],
   ["applicant", AuthLevels.Applicant],
   ["attendee", AuthLevels.Attendee],
   ["volunteer", AuthLevels.Volunteer],
