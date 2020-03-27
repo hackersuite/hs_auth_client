@@ -115,10 +115,10 @@ export async function getTeams(token: string): Promise<Team[]> {
     })
   } catch (err) { throw new Error(err); }
 
-  const teams: any = res.data;
-  if (teams.error && teams.status >= 400) { throw new Error(teams.error); }
+  const data: any = res.data;
+  if (data.error && data.status >= 400) { throw new Error(data.error); }
 
-  return teams.teams.map((team: any) => ({
+  return data.teams.map((team: any) => ({
     _id: team._id,
     name: team.name,
     creator: team.creator,
