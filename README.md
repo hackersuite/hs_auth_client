@@ -1,10 +1,13 @@
-# HS_AUTH_CLIENT
+# HS_Auth_Client
 
 ## Use
+
 ```
 $ npm install @unicsmcr/hs_auth_client
 ```
+
 ## Provides
+
 ### Two Exported TypeScript Type Definitions
 
 **RequestUser**
@@ -24,9 +27,11 @@ $ npm install @unicsmcr/hs_auth_client
 - `table_no?`: number
 
 ### Methods to query and post data
+
 - **getCurrentUser**: (token: string, originalUrl: string) => Promise<RequestUser>
 
-    > originalUrl can be accessed from req object -> req.originalUrl
+  > originalUrl can be accessed from req object -> req.originalUrl
+
 - **getAllUsers**: (token: string) => Promise<RequestUser[]>
 - **putCurrentUser**: (name: string, token: string) => Promise<void>
 - **getTeams**: (token: string) => Promise<Team[]>;
