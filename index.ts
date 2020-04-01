@@ -63,7 +63,7 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
     email: data.user.email,
     email_verified: data.user.email_verified,
     authLevel: convertAuthLevel(data.user.auth_level),
-    team: data.user.team
+    team: Number(data.user.team) === 0 ? undefined : data.user.team
   };
 }
 
