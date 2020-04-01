@@ -52,18 +52,18 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
     throw new Error(err);
   }
 
-  const user = res.data;
-  if (user.error && user.status >= 400) {
-    throw new Error(user.error);
+  const data = res.data;
+  if (data.error && data.status >= 400) {
+    throw new Error(data.error);
   }
 
   return {
-    authId: user.user._id,
-    name: user.user.name,
-    email: user.user.email,
-    email_verified: user.user.email_verified,
-    authLevel: convertAuthLevel(user.user.auth_level),
-    team: user.user.team
+    authId: data.user._id,
+    name: data.user.name,
+    email: data.user.email,
+    email_verified: data.user.email_verified,
+    authLevel: convertAuthLevel(data.user.auth_level),
+    team: data.user.team
   };
 }
 
@@ -77,10 +77,10 @@ export async function getAllUsers(token: string): Promise<RequestUser[]> {
     });
   } catch (err) { throw err; }
 
-  const users = res.data;
-  if (users.error && users.status >= 400) { throw new Error(users.error); }
+  const data = res.data;
+  if (data.error && data.status >= 400) { throw new Error(data.error); }
 
-  return users.users.map((user: any) => (
+  return data.users.map((user: any) => (
     {
       authId: user._id,
       name: user.name,
