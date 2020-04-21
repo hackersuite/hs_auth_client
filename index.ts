@@ -87,7 +87,7 @@ export async function getAllUsers(token: string): Promise<RequestUser[]> {
       email: user.email,
       email_verified: user.email_verified,
       authLevel: convertAuthLevel(user.auth_level),
-      team: user.team
+      team: Number(user.team) === 0 ? undefined : user.team
     }
   ));
 }
