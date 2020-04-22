@@ -10,7 +10,7 @@ export const enum AuthLevels {
 }
 const stringAuthLevels = new Map<string, AuthLevels>([
   ["unverified", AuthLevels.Unverified],
-  ["applicant", AuthLevels.Applicant],
+  ["applicant", AuthLevels.Attendee],
   ["attendee", AuthLevels.Attendee],
   ["volunteer", AuthLevels.Volunteer],
   ["organiser", AuthLevels.Organiser]
