@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import * as networking from './networking';
 
 export const enum AuthLevels {
   // NOTE: the auth levels must be in ascending order
@@ -40,30 +41,15 @@ export type Team = {
 }
 
 export async function getCurrentUser(token: string, originalUrl: string): Promise<RequestUser> {
-  let res: AxiosResponse<any>;
-  try {
-    res = await axios.get(`${process.env.AUTH_URL}/api/v1/users/me`, {
-      headers: {
-        Authorization: token,
-        Referer: originalUrl
-      }
-    });
-  } catch (err) {
-    throw new Error(err);
-  }
-
-  const data = res.data;
-  if (data.error && data.status >= 400) {
-    throw new Error(data.error);
-  }
+  const res = await networking.getCurrentUser(token, originalUrl);
 
   return {
-    authId: data.user._id,
-    name: data.user.name,
-    email: data.user.email,
-    email_verified: data.user.email_verified,
-    authLevel: convertAuthLevel(data.user.auth_level),
-    team: Number(data.user.team) === 0 ? undefined : data.user.team
+    authId: res.data.user._id,
+    name: res.data.user.name,
+    email: res.data.user.email,
+    email_verified: res.data.user.email_verified,
+    authLevel: convertAuthLevel(res.data.user.auth_level),
+    team: Number(res.data.user.team) === 0 ? undefined : res.data.user.team
   };
 }
 
