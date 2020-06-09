@@ -69,16 +69,7 @@ export async function getAllUsers(token: string): Promise<RequestUser[]> {
 }
 
 export async function putCurrentUser(name: string, token: string): Promise<void> {
-  const res: AxiosResponse<any> = await axios.put(`${process.env.AUTH_URL}/api/v1/users/me`, {
-    headers: {
-      Authorization: token
-    },
-    body: {
-      name: name
-    }
-  });
-
-  if (res.data.error && res.status >= 400) { throw res.data.error; }
+  await networking.putCurrentUser(name, token);
 }
 
 export async function getTeams(token: string): Promise<Team[]> {
