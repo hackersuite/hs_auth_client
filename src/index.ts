@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import * as networking from './networking';
+import { convertAuthLevel } from "./util/authLevel";
 
 export const enum AuthLevels {
   // NOTE: the auth levels must be in ascending order
@@ -8,20 +9,6 @@ export const enum AuthLevels {
   Attendee,
   Volunteer,
   Organiser
-}
-const stringAuthLevels = new Map<string, AuthLevels>([
-  ["unverified", AuthLevels.Unverified],
-  ["applicant", AuthLevels.Applicant],
-  ["attendee", AuthLevels.Attendee],
-  ["volunteer", AuthLevels.Volunteer],
-  ["organiser", AuthLevels.Organiser]
-]);
-function convertAuthLevel(authLevel: string): AuthLevels {
-  if (stringAuthLevels.has(authLevel)) {
-    return stringAuthLevels.get(authLevel) as AuthLevels
-  } else {
-    throw new Error("Auth Level Unknown");
-  }
 }
 
 export type RequestUser = {
