@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import * as networking from './networking';
 import { convertAuthLevel } from "./util/authLevel";
+import { sanitiseTeam } from "./util/sanitiseTeam";
 
 export const enum AuthLevels {
   // NOTE: the auth levels must be in ascending order
@@ -36,7 +37,7 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
     email: res.data.user.email,
     email_verified: res.data.user.email_verified,
     authLevel: convertAuthLevel(res.data.user.auth_level),
-    team: Number(res.data.user.team) === 0 ? undefined : res.data.user.team
+    team: sanitiseTeam(res.data.user.team)
   };
 }
 
@@ -50,7 +51,7 @@ export async function getAllUsers(token: string): Promise<RequestUser[]> {
       email: user.email,
       email_verified: user.email_verified,
       authLevel: convertAuthLevel(user.auth_level),
-      team: Number(user.team) === 0 ? undefined : user.team
+      team: sanitiseTeam(user.team)
     }
   ));
 }
