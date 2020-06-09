@@ -47,10 +47,14 @@ test('getCurrentUser(): user 2', async () => {
 	expect(user.team).toEqual(fixture.team);
 });
 
-test('getCurrentUser(): throws when API response has error', async () => {
-	mock.onGet('/api/v1/users/me').reply(400, {
-		status: 400,
-		error: 'Bad request'
-	});
-	await expect(authClient.getCurrentUser('token', 'url')).rejects.toThrow();
-});
+const errorCodes = [400, 500];
+
+for (const errorCode of errorCodes) {
+	test(`getCurrentUser(): throws when API response has ${errorCode} error`, async () => {
+		mock.onGet('/api/v1/users/me').reply(400, {
+			status: errorCode,
+			error: 'Bad request'
+		});
+		await expect(authClient.getCurrentUser('token', 'url')).rejects.toThrow();
+	});	
+}
