@@ -20,6 +20,8 @@
   "homepage": "https://github.com/unicsmcr/hs_auth_client#readme",
   "devDependencies": {
     "@types/node": "^13.7.6",
+    "axios-mock-adapter": "^1.18.1",
+    "jest": "^26.0.1",
     "typescript": "^3.7.5"
   },
   "dependencies": {

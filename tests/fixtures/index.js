@@ -1,0 +1,1 @@
+exports.currentUser = require('./currentUser');
