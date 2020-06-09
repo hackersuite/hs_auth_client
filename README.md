@@ -1,5 +1,7 @@
 # HS_Auth_Client
 
+![Tests](https://github.com/unicsmcr/hs_auth_client/workflows/Tests/badge.svg)
+
 ## Use
 
 ```
