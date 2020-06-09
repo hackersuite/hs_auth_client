@@ -54,19 +54,9 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
 }
 
 export async function getAllUsers(token: string): Promise<RequestUser[]> {
-  let res: AxiosResponse<any>;
-  try {
-    res = await axios.get(`${process.env.AUTH_URL}/api/v1/users`, {
-      headers: {
-        Authorization: token
-      }
-    });
-  } catch (err) { throw err; }
+  const res = await networking.getAllUsers(token);
 
-  const data = res.data;
-  if (data.error && data.status >= 400) { throw new Error(data.error); }
-
-  return data.users.map((user: any) => (
+  return res.data.users.map((user: any) => (
     {
       authId: user._id,
       name: user.name,

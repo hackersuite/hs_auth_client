@@ -7,15 +7,24 @@ interface AuthResponse {
 	error: string;
 }
 
+interface AuthUser {
+	_id: string;
+	name: string;
+	email: string;
+	auth_level: string;
+	team: string;
+}
+
+interface ExtendedAuthUser extends AuthUser {
+	email_verified: boolean;
+}
+
 export interface AuthCurrentUserResponse extends AuthResponse {
-	user: {
-		_id: string;
-		name: string;
-		email: string;
-		email_verified: boolean;
-		auth_level: string;
-		team: string;
-	};
+	user: ExtendedAuthUser;
+}
+
+export interface AuthAllUsersResponse extends AuthResponse {
+	users: AuthUser[];
 }
 
 function handleError<T extends AxiosResponse<AuthResponse>>(res: T): T {
@@ -32,5 +41,14 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
 			Referer: originalUrl
 		}
 	}) as AxiosResponse<AuthCurrentUserResponse>;
+	return handleError(res);
+}
+
+export async function getAllUsers(token: string): Promise<AxiosResponse<AuthAllUsersResponse>> {
+	const res = await axios.get(`${AUTH_URL}/api/v1/users/me`, {
+		headers: {
+			Authorization: token
+		}
+	}) as AxiosResponse<AuthAllUsersResponse>;
 	return handleError(res);
 }
