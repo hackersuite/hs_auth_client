@@ -41,7 +41,7 @@ export type Team = {
 }
 
 export async function getCurrentUser(token: string, originalUrl: string): Promise<RequestUser> {
-  const res = await networking.getCurrentUser(token, originalUrl);
+  const res = networking.handleError(await networking.getCurrentUser(token, originalUrl));
 
   return {
     authId: res.data.user._id,
@@ -54,7 +54,7 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
 }
 
 export async function getAllUsers(token: string): Promise<RequestUser[]> {
-  const res = await networking.getAllUsers(token);
+  const res = networking.handleError(await networking.getAllUsers(token));
 
   return res.data.users.map((user: any) => (
     {
@@ -69,7 +69,7 @@ export async function getAllUsers(token: string): Promise<RequestUser[]> {
 }
 
 export async function putCurrentUser(name: string, token: string): Promise<void> {
-  await networking.putCurrentUser(name, token);
+  networking.handleError(await networking.putCurrentUser(name, token));
 }
 
 export async function getTeams(token: string): Promise<Team[]> {
