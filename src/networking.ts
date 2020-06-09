@@ -19,12 +19,22 @@ interface ExtendedAuthUser extends AuthUser {
 	email_verified: boolean;
 }
 
+interface AuthTeam {
+	_id: string;
+	name: string;
+	creator: string;
+}
+
 export interface AuthCurrentUserResponse extends AuthResponse {
 	user: ExtendedAuthUser;
 }
 
 export interface AuthAllUsersResponse extends AuthResponse {
 	users: AuthUser[];
+}
+
+export interface AuthAllTeamsResponse extends AuthResponse {
+	teams: AuthTeam[];
 }
 
 export function handleError<T extends AxiosResponse>(res: T): T {
@@ -60,4 +70,12 @@ export async function putCurrentUser(name: string, token: string): Promise<Axios
       name
     }
   });
+}
+
+export async function getTeams(token: string): Promise<AxiosResponse<AuthAllTeamsResponse>> {
+	return axios.get(`${AUTH_URL}/api/v1/teams`, {
+		headers: {
+			Authorization: token,
+		}
+	});
 }

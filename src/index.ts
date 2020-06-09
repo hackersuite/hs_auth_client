@@ -73,24 +73,9 @@ export async function putCurrentUser(name: string, token: string): Promise<void>
 }
 
 export async function getTeams(token: string): Promise<Team[]> {
-  let res: AxiosResponse<any>;
-  try {
-    res = await axios.get(`${process.env.AUTH_URL}/api/v1/teams/`, {
-      headers: {
-        Authorization: token,
-      }
-    })
-  } catch (err) { throw new Error(err); }
+  const res = networking.handleError(await networking.getTeams(token));
 
-  const data: any = res.data;
-  if (data.error && data.status >= 400) { throw new Error(data.error); }
-
-  return data.teams.map((team: any) => ({
-    _id: team._id,
-    name: team.name,
-    creator: team.creator,
-    table_no: team.table_no
-  }));
+  return res.data.teams;
 }
 
 export async function getTeam(token: string, teamCode: string): Promise<Team> {
