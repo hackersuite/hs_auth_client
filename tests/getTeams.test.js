@@ -74,7 +74,7 @@ const errorCodes = [400, 500];
 
 for (const errorCode of errorCodes) {
 	test(`getTeams(): throws when API response has ${errorCode} error`, async () => {
-		mock.onGet('/api/v1/teams').reply(400, {
+		mock.onGet('/api/v1/teams').reply(errorCode, {
 			status: errorCode,
 			error: 'Bad request'
 		});
