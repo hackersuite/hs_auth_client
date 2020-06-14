@@ -8,6 +8,7 @@
       "es6",
       "dom"
     ],
+    "rootDir": "src",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
@@ -16,6 +17,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "test"
+    "tests",
   ]
 }
