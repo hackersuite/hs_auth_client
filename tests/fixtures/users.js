@@ -15,8 +15,3 @@ exports.BobRoss = {
 	auth_level: 'attendee',
 	team: '6f7g8h9i10j'
 }
-
-exports.BadResponse = {
-	status: 404,
-	error: 'User does not exist'
-};

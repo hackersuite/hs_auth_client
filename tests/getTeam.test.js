@@ -12,19 +12,15 @@ mock.onGet('/api/v1/teams').reply(200, {
 	status: 200,
 	error: '',
 	teams: [
-		mockTeams.Team1,
-		mockTeams.Team2
+		...Object.values(mockTeams)
 	]
 });
 
-test('getTeam(): 1st team', async () => {
-	const team = await authClient.getTeam('token', mockTeams.Team1._id);
-	expect(team).toEqual(transformTeam(mockTeams.Team1));
-});
-
-test('getTeam(): 2nd team', async () => {
-	const team = await authClient.getTeam('token', mockTeams.Team2._id);
-	expect(team).toEqual(transformTeam(mockTeams.Team2));
+test('getTeam(): fetches and transforms teams correctly', async () => {
+	for (const fixture of Object.values(mockTeams)) {
+		const team = await authClient.getTeam('token', fixture._id);
+		expect(team).toEqual(transformTeam(fixture));
+	}
 });
 
 test('getTeam(): throws for non-existent team', async () => {
