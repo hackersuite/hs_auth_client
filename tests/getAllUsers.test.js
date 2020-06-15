@@ -45,7 +45,7 @@ test('getAllUsers(): 1 user gives 1-item list', async () => {
 	expect(users.length).toEqual(1);
 	
 	const user = users[0];
-	expect(user.authId).toEqual(fixture._id);
+	expect(user.id).toEqual(fixture._id);
 	expect(user.authLevel).toEqual(3);
 	expect(user.name).toEqual(fixture.name);
 	expect(user.email).toEqual(fixture.email);
@@ -69,14 +69,14 @@ test('getAllUsers(): 2 users gives 2-item list', async () => {
 	expect(users.length).toEqual(2);
 	
 	const user1 = users[0];
-	expect(user1.authId).toEqual(fixture1._id);
+	expect(user1.id).toEqual(fixture1._id);
 	expect(user1.authLevel).toEqual(3);
 	expect(user1.name).toEqual(fixture1.name);
 	expect(user1.email).toEqual(fixture1.email);
 	expect(user1.team).toBeUndefined();
 
 	const user2 = users[1];
-	expect(user2.authId).toEqual(fixture2._id);
+	expect(user2.id).toEqual(fixture2._id);
 	expect(user2.authLevel).toEqual(2);
 	expect(user2.name).toEqual(fixture2.name);
 	expect(user2.email).toEqual(fixture2.email);

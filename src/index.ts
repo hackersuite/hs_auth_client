@@ -15,7 +15,7 @@ export const enum AuthLevels {
 }
 
 export interface User {
-  authId: string;
+  id: string;
   name: string;
   email: string;
   authLevel: AuthLevels;

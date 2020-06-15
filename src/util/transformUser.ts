@@ -5,7 +5,7 @@ import { convertAuthLevel } from "./authLevel";
 
 export function transformUser(raw: AuthUser): User {
 	return {
-		authId: raw._id,
+		id: raw._id,
 		authLevel: convertAuthLevel(raw.auth_level),
 		email: raw.email,
 		name: raw.name,
