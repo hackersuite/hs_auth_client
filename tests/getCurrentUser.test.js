@@ -21,7 +21,7 @@ test('getCurrentUser(): user 1', async () => {
 	});
 
 	const user = await authClient.getCurrentUser('token', 'url');
-	expect(user.authId).toEqual(fixture._id);
+	expect(user.id).toEqual(fixture._id);
 	expect(user.authLevel).toEqual(3);
 	expect(user.name).toEqual(fixture.name);
 	expect(user.email).toEqual(fixture.email);
@@ -39,7 +39,7 @@ test('getCurrentUser(): user 2', async () => {
 	});
 
 	const user = await authClient.getCurrentUser('token', 'url');
-	expect(user.authId).toEqual(fixture._id);
+	expect(user.id).toEqual(fixture._id);
 	expect(user.authLevel).toEqual(2);
 	expect(user.name).toEqual(fixture.name);
 	expect(user.email).toEqual(fixture.email);
