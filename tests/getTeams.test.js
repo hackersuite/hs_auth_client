@@ -38,7 +38,7 @@ test('getTeams(): 1 team gives 1-item list', async () => {
 	expect(teams.length).toEqual(1);
 	
 	const team = teams[0];
-	expect(team._id).toEqual(fixture._id);
+	expect(team.id).toEqual(fixture._id);
 	expect(team.name).toEqual(fixture.name);
 	expect(team.creator).toEqual(fixture.creator);
 });
@@ -60,12 +60,12 @@ test('getTeams(): 2 teams gives 2-item list', async () => {
 	expect(teams.length).toEqual(2);
 	
 	const team1 = teams[0];
-	expect(team1._id).toEqual(fixture1._id);
+	expect(team1.id).toEqual(fixture1._id);
 	expect(team1.name).toEqual(fixture1.name);
 	expect(team1.creator).toEqual(fixture1.creator);
 
 	const team2 = teams[1];
-	expect(team2._id).toEqual(fixture2._id);
+	expect(team2.id).toEqual(fixture2._id);
 	expect(team2.name).toEqual(fixture2.name);
 	expect(team2.creator).toEqual(fixture2.creator);
 });

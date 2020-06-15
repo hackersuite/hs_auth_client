@@ -18,16 +18,18 @@ mock.onGet('/api/v1/teams').reply(200, {
 
 test('getTeam(): 1st team', async () => {
 	const team = await authClient.getTeam('token', mockTeams.Team1._id);
-	expect(team._id).toEqual(mockTeams.Team1._id);
+	expect(team.id).toEqual(mockTeams.Team1._id);
 	expect(team.name).toEqual(mockTeams.Team1.name);
 	expect(team.creator).toEqual(mockTeams.Team1.creator);
+	expect(team.tableNumber).toBeUndefined();
 });
 
 test('getTeam(): 2nd team', async () => {
 	const team = await authClient.getTeam('token', mockTeams.Team2._id);
-	expect(team._id).toEqual(mockTeams.Team2._id);
+	expect(team.id).toEqual(mockTeams.Team2._id);
 	expect(team.name).toEqual(mockTeams.Team2.name);
 	expect(team.creator).toEqual(mockTeams.Team2.creator);
+	expect(team.tableNumber).toEqual(mockTeams.Team2.table_no);
 });
 
 test('getTeam(): throws for non-existent team', async () => {

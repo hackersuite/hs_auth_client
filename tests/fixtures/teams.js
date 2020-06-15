@@ -7,5 +7,6 @@ exports.Team1 = {
 exports.Team2 = {
 	'_id': '1238912494528342938493',
 	'name': 'Team 3',
-	'creator': '19230123809290'
+	'creator': '19230123809290',
+	'table_no': 212
 };
