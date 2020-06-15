@@ -19,10 +19,11 @@ export interface ExtendedAuthUser extends AuthUser {
 	email_verified: boolean;
 }
 
-interface AuthTeam {
+export interface AuthTeam {
 	_id: string;
 	name: string;
 	creator: string;
+	table_no?: number;
 }
 
 export interface AuthCurrentUserResponse extends AuthResponse {
