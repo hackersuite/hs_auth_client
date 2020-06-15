@@ -25,7 +25,7 @@ test('getCurrentUser(): user 1', async () => {
 	expect(user.authLevel).toEqual(3);
 	expect(user.name).toEqual(fixture.name);
 	expect(user.email).toEqual(fixture.email);
-	expect(user.email_verified).toEqual(fixture.email_verified);
+	expect(user.emailVerified).toEqual(fixture.email_verified);
 	expect(user.team).toBeUndefined();
 });
 
@@ -43,7 +43,7 @@ test('getCurrentUser(): user 2', async () => {
 	expect(user.authLevel).toEqual(2);
 	expect(user.name).toEqual(fixture.name);
 	expect(user.email).toEqual(fixture.email);
-	expect(user.email_verified).toEqual(fixture.email_verified);
+	expect(user.emailVerified).toEqual(fixture.email_verified);
 	expect(user.team).toEqual(fixture.team);
 });
 
