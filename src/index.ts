@@ -12,7 +12,7 @@ export const enum AuthLevels {
   Organiser
 }
 
-export type RequestUser = {
+export interface RequestUser {
   authId: string;
   name: string;
   email: string;
@@ -21,7 +21,7 @@ export type RequestUser = {
   team?: string;
 };
 
-export type Team = {
+export interface Team {
   _id: string;
   name: string;
   creator: string;
