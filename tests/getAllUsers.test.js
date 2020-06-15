@@ -2,7 +2,7 @@ process.env.AUTH_URL = '';
 
 const MockAdapter = require('axios-mock-adapter');
 const axios = require('axios');
-const authClient = require('../dist');
+const authClient = require('../');
 const mockUsers = require('./fixtures/users');
 const { transformUser } = require('../dist/util/transformUser');
 

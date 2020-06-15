@@ -2,7 +2,7 @@ process.env.AUTH_URL = '';
 
 const MockAdapter = require('axios-mock-adapter');
 const axios = require('axios');
-const authClient = require('../dist');
+const authClient = require('../');
 const users = require('./fixtures/users');
 const { transformExtendedUser } = require('../dist/util/transformUser');
 
@@ -12,30 +12,18 @@ afterEach(() => {
 	mock.reset();
 });
 
-test('getCurrentUser(): user 1', async () => {
-	const fixture = users.JohnDoe;
+test('getCurrentUser(): fetches and transforms users correctly', async () => {
+	for (const fixture of Object.values(users)) {
 
-	mock.onGet('/api/v1/users/me').reply(200, {
-		status: 200,
-		error: '',
-		user: fixture
-	});
+		mock.onGet('/api/v1/users/me').reply(200, {
+			status: 200,
+			error: '',
+			user: fixture
+		});
 
-	const user = await authClient.getCurrentUser('token', 'url');
-	expect(user).toEqual(transformExtendedUser(fixture));
-});
-
-test('getCurrentUser(): user 2', async () => {
-	const fixture = users.BobRoss;
-
-	mock.onGet('/api/v1/users/me').reply(200, {
-		status: 200,
-		error: '',
-		user: fixture
-	});
-
-	const user = await authClient.getCurrentUser('token', 'url');
-	expect(user).toEqual(transformExtendedUser(fixture));
+		const user = await authClient.getCurrentUser('token', 'url');
+		expect(user).toEqual(transformExtendedUser(fixture));
+	}
 });
 
 const errorCodes = [400, 500];
