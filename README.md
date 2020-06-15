@@ -12,29 +12,33 @@ $ npm install @unicsmcr/hs_auth_client
 
 ### Two Exported TypeScript Type Definitions
 
-**RequestUser**
+**User**
 
-- `authId`: string
+- `id`: string
 - `name`: string
 - `email`: string
-- `email_verified`: boolean
 - `authLevel`: AuthLevels
 - `team?`: string
 
+**ExtendedUser**
+
+- All the properties of `User`, as well as:
+- `emailVerified`: boolean
+
 **Team**
 
-- `_id`: string
+- `id`: string
 - `name`: string
 - `creator`: string
-- `table_no?`: number
+- `tableNumber?`: number
 
 ### Methods to query and post data
 
-- **getCurrentUser**: (token: string, originalUrl: string) => Promise<RequestUser>
+- **getCurrentUser**: (token: string, originalUrl: string) => Promise<ExtendedUser>
 
   > originalUrl can be accessed from req object -> req.originalUrl
 
-- **getAllUsers**: (token: string) => Promise<RequestUser[]>
+- **getAllUsers**: (token: string) => Promise<User[]>
 - **putCurrentUser**: (name: string, token: string) => Promise<void>
 - **getTeams**: (token: string) => Promise<Team[]>;
 - **getTeam**: (token: string, teamCode: string) => Promise<Team>
