@@ -4,7 +4,7 @@ const { convertAuthLevel } = require('../dist/util/authLevel');
 const fixtures = require('./fixtures/users');
 
 test('Users are transformed correctly', () => {
-	for (const fixture of [fixtures.JohnDoe, fixtures.BobRoss]) {
+	for (const fixture of Object.values(fixtures)) {
 		const transformed = transformUser(fixture);
 		expect(transformUser(fixture)).toEqual({
 			id: fixture._id,
@@ -17,7 +17,7 @@ test('Users are transformed correctly', () => {
 });
 
 test('Exended users are transformed correctly', () => {
-	for (const fixture of [fixtures.JohnDoe, fixtures.BobRoss]) {
+	for (const fixture of Object.values(fixtures)) {
 		const transformed = transformUser(fixture);
 		expect(transformExtendedUser(fixture)).toEqual({
 			...transformUser(fixture),
