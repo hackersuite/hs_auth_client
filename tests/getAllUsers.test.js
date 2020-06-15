@@ -4,6 +4,7 @@ const MockAdapter = require('axios-mock-adapter');
 const axios = require('axios');
 const authClient = require('../dist');
 const mockUsers = require('./fixtures/users');
+const { transformUser } = require('../dist/util/transformUser');
 
 const mock = new MockAdapter(axios);
 
@@ -43,13 +44,7 @@ test('getAllUsers(): 1 user gives 1-item list', async () => {
 
 	const users = await authClient.getAllUsers('token');
 	expect(users.length).toEqual(1);
-	
-	const user = users[0];
-	expect(user.id).toEqual(fixture._id);
-	expect(user.authLevel).toEqual(3);
-	expect(user.name).toEqual(fixture.name);
-	expect(user.email).toEqual(fixture.email);
-	expect(user.team).toBeUndefined();
+	expect(users[0]).toEqual(transformUser(restrict(fixture)));
 });
 
 test('getAllUsers(): 2 users gives 2-item list', async () => {
@@ -67,20 +62,8 @@ test('getAllUsers(): 2 users gives 2-item list', async () => {
 
 	const users = await authClient.getAllUsers('token');
 	expect(users.length).toEqual(2);
-	
-	const user1 = users[0];
-	expect(user1.id).toEqual(fixture1._id);
-	expect(user1.authLevel).toEqual(3);
-	expect(user1.name).toEqual(fixture1.name);
-	expect(user1.email).toEqual(fixture1.email);
-	expect(user1.team).toBeUndefined();
-
-	const user2 = users[1];
-	expect(user2.id).toEqual(fixture2._id);
-	expect(user2.authLevel).toEqual(2);
-	expect(user2.name).toEqual(fixture2.name);
-	expect(user2.email).toEqual(fixture2.email);
-	expect(user2.team).toEqual(fixture2.team);
+	expect(users[0]).toEqual(transformUser(restrict(fixture1)));
+	expect(users[1]).toEqual(transformUser(restrict(fixture2)));
 });
 
 const errorCodes = [400, 500];

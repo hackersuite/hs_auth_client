@@ -4,6 +4,7 @@ const MockAdapter = require('axios-mock-adapter');
 const axios = require('axios');
 const authClient = require('../dist');
 const users = require('./fixtures/users');
+const { transformExtendedUser } = require('../dist/util/transformUser');
 
 const mock = new MockAdapter(axios);
 
@@ -21,12 +22,7 @@ test('getCurrentUser(): user 1', async () => {
 	});
 
 	const user = await authClient.getCurrentUser('token', 'url');
-	expect(user.id).toEqual(fixture._id);
-	expect(user.authLevel).toEqual(3);
-	expect(user.name).toEqual(fixture.name);
-	expect(user.email).toEqual(fixture.email);
-	expect(user.emailVerified).toEqual(fixture.email_verified);
-	expect(user.team).toBeUndefined();
+	expect(user).toEqual(transformExtendedUser(fixture));
 });
 
 test('getCurrentUser(): user 2', async () => {
@@ -39,12 +35,7 @@ test('getCurrentUser(): user 2', async () => {
 	});
 
 	const user = await authClient.getCurrentUser('token', 'url');
-	expect(user.id).toEqual(fixture._id);
-	expect(user.authLevel).toEqual(2);
-	expect(user.name).toEqual(fixture.name);
-	expect(user.email).toEqual(fixture.email);
-	expect(user.emailVerified).toEqual(fixture.email_verified);
-	expect(user.team).toEqual(fixture.team);
+	expect(user).toEqual(transformExtendedUser(fixture));
 });
 
 const errorCodes = [400, 500];
