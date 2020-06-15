@@ -7,7 +7,7 @@ interface AuthResponse {
 	error: string;
 }
 
-interface AuthUser {
+export interface AuthUser {
 	_id: string;
 	name: string;
 	email: string;
@@ -15,7 +15,7 @@ interface AuthUser {
 	team: string;
 }
 
-interface ExtendedAuthUser extends AuthUser {
+export interface ExtendedAuthUser extends AuthUser {
 	email_verified: boolean;
 }
 

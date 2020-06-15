@@ -11,10 +11,10 @@ afterEach(() => {
 	mock.reset();
 });
 
-// To remove email_verified field
+// To remove emailVerified field
 function restrict(user) {
 	let copy = { ...user };
-	delete copy['email_verified'];
+	delete copy['emailVerified'];
 	return copy;
 }
 

@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import * as networking from './networking';
 import { convertAuthLevel } from "./util/authLevel";
 import { sanitiseTeam } from "./util/sanitiseTeam";
+import { transformUser, transformExtendedUser } from "./util/transformUser";
 
 export const enum AuthLevels {
   // NOTE: the auth levels must be in ascending order
@@ -12,14 +13,17 @@ export const enum AuthLevels {
   Organiser
 }
 
-export interface RequestUser {
+export interface User {
   authId: string;
   name: string;
   email: string;
-  email_verified: boolean;
   authLevel: AuthLevels;
   team?: string;
 };
+
+export interface ExtendedUser extends User {
+  emailVerified: boolean;
+}
 
 export interface Team {
   _id: string;
@@ -28,32 +32,16 @@ export interface Team {
   table_no?: number;
 }
 
-export async function getCurrentUser(token: string, originalUrl: string): Promise<RequestUser> {
+export async function getCurrentUser(token: string, originalUrl: string): Promise<ExtendedUser> {
   const res = networking.handleError(await networking.getCurrentUser(token, originalUrl));
 
-  return {
-    authId: res.data.user._id,
-    name: res.data.user.name,
-    email: res.data.user.email,
-    email_verified: res.data.user.email_verified,
-    authLevel: convertAuthLevel(res.data.user.auth_level),
-    team: sanitiseTeam(res.data.user.team)
-  };
+  return transformExtendedUser(res.data.user);
 }
 
-export async function getAllUsers(token: string): Promise<RequestUser[]> {
+export async function getAllUsers(token: string): Promise<User[]> {
   const res = networking.handleError(await networking.getAllUsers(token));
 
-  return res.data.users.map((user: any) => (
-    {
-      authId: user._id,
-      name: user.name,
-      email: user.email,
-      email_verified: user.email_verified,
-      authLevel: convertAuthLevel(user.auth_level),
-      team: sanitiseTeam(user.team)
-    }
-  ));
+  return res.data.users.map(user => transformUser(user));
 }
 
 export async function putCurrentUser(name: string, token: string): Promise<void> {
