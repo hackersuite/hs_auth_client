@@ -42,7 +42,7 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
 export async function getAllUsers(token: string): Promise<User[]> {
   const res = networking.handleError(await networking.getAllUsers(token));
 
-  return res.data.users.map(user => transformUser(user));
+  return res.data.users.map(transformUser);
 }
 
 export async function putCurrentUser(name: string, token: string): Promise<void> {
@@ -52,7 +52,7 @@ export async function putCurrentUser(name: string, token: string): Promise<void>
 export async function getTeams(token: string): Promise<Team[]> {
   const res = networking.handleError(await networking.getTeams(token));
 
-  return res.data.teams.map(team => transformTeam(team));
+  return res.data.teams.map(transformTeam);
 }
 
 export async function getTeam(token: string, teamCode: string): Promise<Team> {
