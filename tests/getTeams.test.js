@@ -4,6 +4,7 @@ const MockAdapter = require('axios-mock-adapter');
 const axios = require('axios');
 const authClient = require('../dist');
 const mockTeams = require('./fixtures/teams');
+const { transformTeam } = require("../dist/util/transformTeam");
 
 const mock = new MockAdapter(axios);
 
@@ -36,11 +37,7 @@ test('getTeams(): 1 team gives 1-item list', async () => {
 
 	const teams = await authClient.getTeams('token');
 	expect(teams.length).toEqual(1);
-	
-	const team = teams[0];
-	expect(team.id).toEqual(fixture._id);
-	expect(team.name).toEqual(fixture.name);
-	expect(team.creator).toEqual(fixture.creator);
+	expect(teams[0]).toEqual(transformTeam(fixture));
 });
 
 test('getTeams(): 2 teams gives 2-item list', async () => {
@@ -58,16 +55,8 @@ test('getTeams(): 2 teams gives 2-item list', async () => {
 
 	const teams = await authClient.getTeams('token');
 	expect(teams.length).toEqual(2);
-	
-	const team1 = teams[0];
-	expect(team1.id).toEqual(fixture1._id);
-	expect(team1.name).toEqual(fixture1.name);
-	expect(team1.creator).toEqual(fixture1.creator);
-
-	const team2 = teams[1];
-	expect(team2.id).toEqual(fixture2._id);
-	expect(team2.name).toEqual(fixture2.name);
-	expect(team2.creator).toEqual(fixture2.creator);
+	expect(teams[0]).toEqual(transformTeam(fixture1));
+	expect(teams[1]).toEqual(transformTeam(fixture2));
 });
 
 const errorCodes = [400, 500];
