@@ -1,5 +1,5 @@
-import { AuthTeam } from "../networking";
-import { Team } from "..";
+import { AuthTeam } from '../networking';
+import { Team } from '..';
 
 export function transformTeam(raw: AuthTeam): Team {
 	return {

@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prebuild": "npm run lint",
     "build": "tsc",
+    "lint": "eslint src --ext .ts",
     "test": "npm run build && jest --coverage"
   },
   "author": "unicsmcr",
@@ -19,12 +21,36 @@
   },
   "homepage": "https://github.com/unicsmcr/hs_auth_client#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.0",
     "@types/node": "^13.7.6",
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
     "axios-mock-adapter": "^1.18.1",
+    "eslint": "^7.2.0",
+    "eslint-config-marine": "^7.1.2",
     "jest": "^26.0.1",
+    "ts-jest": "^26.1.0",
     "typescript": "^3.7.5"
   },
   "dependencies": {
     "axios": "^0.19.2"
-  }
+  },
+  "eslintConfig": {
+		"extends": "marine/node",
+		"parserOptions": {
+			"project": "tsconfig.eslint.json"
+		},
+		"env": {
+			"jest": true
+    },
+    "rules": {
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          "selector": "enumMember",
+          "format": ["PascalCase"]
+        }
+      ]
+    }
+	}
 }
