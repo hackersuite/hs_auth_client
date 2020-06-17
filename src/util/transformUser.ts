@@ -1,7 +1,7 @@
-import { AuthUser, ExtendedAuthUser } from "../networking";
-import { User, ExtendedUser } from "..";
-import { sanitiseTeam } from "./sanitiseTeam";
-import { convertAuthLevel } from "./authLevel";
+import { AuthUser, ExtendedAuthUser } from '../networking';
+import { User, ExtendedUser } from '..';
+import { sanitiseTeam } from './sanitiseTeam';
+import { convertAuthLevel } from './authLevel';
 
 export function transformUser(raw: AuthUser): User {
 	return {
@@ -10,7 +10,7 @@ export function transformUser(raw: AuthUser): User {
 		email: raw.email,
 		name: raw.name,
 		team: sanitiseTeam(raw.team)
-	}
+	};
 }
 
 export function transformExtendedUser(raw: ExtendedAuthUser): ExtendedUser {

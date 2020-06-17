@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from 'axios';
 
-const AUTH_URL = process.env.AUTH_URL;
+const AUTH_URL = process.env.AUTH_URL ?? '';
 
 interface AuthResponse {
 	status: number;
@@ -64,19 +64,19 @@ export async function getAllUsers(token: string): Promise<AxiosResponse<AuthAllU
 
 export async function putCurrentUser(name: string, token: string): Promise<AxiosResponse<AuthResponse>> {
 	return axios.put(`${AUTH_URL}/api/v1/users/me`, {
-    headers: {
-      Authorization: token
-    },
-    body: {
-      name
-    }
-  });
+		headers: {
+			Authorization: token
+		},
+		body: {
+			name
+		}
+	});
 }
 
 export async function getTeams(token: string): Promise<AxiosResponse<AuthAllTeamsResponse>> {
 	return axios.get(`${AUTH_URL}/api/v1/teams`, {
 		headers: {
-			Authorization: token,
+			Authorization: token
 		}
 	});
 }
