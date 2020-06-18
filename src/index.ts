@@ -2,7 +2,7 @@ import * as networking from './networking';
 import { transformUser, transformExtendedUser } from './util/transformUser';
 import { transformTeam } from './util/transformTeam';
 
-export const enum AuthLevels {
+export const enum AuthLevel {
 	// NOTE: the auth levels must be in ascending order
 	Unverified,
 	Applicant,
@@ -15,7 +15,7 @@ export interface User {
 	id: string;
 	name: string;
 	email: string;
-	authLevel: AuthLevels;
+	authLevel: AuthLevel;
 	team?: string;
 }
 

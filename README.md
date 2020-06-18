@@ -20,7 +20,7 @@ npm install @unicsmcr/hs_auth_client
 - `id`: string
 - `name`: string
 - `email`: string
-- `authLevel`: AuthLevels
+- `authLevel`: AuthLevel
 - `team?`: string
 
 **ExtendedUser**
