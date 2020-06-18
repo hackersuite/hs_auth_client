@@ -8,7 +8,7 @@
     "prebuild": "npm run lint",
     "build": "tsc",
     "lint": "eslint src --ext .ts",
-    "test": "jest --coverage"
+    "test": "jest src --coverage"
   },
   "author": "unicsmcr",
   "license": "MIT",
