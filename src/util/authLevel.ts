@@ -1,15 +1,15 @@
-import { AuthLevels } from '../';
+import { AuthLevel } from '../';
 
-const stringAuthLevels = new Map<string, AuthLevels>([
-	['unverified', AuthLevels.Unverified],
-	['applicant', AuthLevels.Applicant],
-	['attendee', AuthLevels.Attendee],
-	['volunteer', AuthLevels.Volunteer],
-	['organiser', AuthLevels.Organiser]
+const stringAuthLevel = new Map<string, AuthLevel>([
+	['unverified', AuthLevel.Unverified],
+	['applicant', AuthLevel.Applicant],
+	['attendee', AuthLevel.Attendee],
+	['volunteer', AuthLevel.Volunteer],
+	['organiser', AuthLevel.Organiser]
 ]);
 
-export function convertAuthLevel(authLevel: string): AuthLevels {
-	const converted = stringAuthLevels.get(authLevel);
+export function convertAuthLevel(authLevel: string): AuthLevel {
+	const converted = stringAuthLevel.get(authLevel);
 	if (typeof converted === 'undefined') throw new Error('Auth Level Unknown');
 	return converted;
 }
