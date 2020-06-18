@@ -9,8 +9,7 @@ const stringAuthLevels = new Map<string, AuthLevels>([
 ]);
 
 export function convertAuthLevel(authLevel: string): AuthLevels {
-	if (stringAuthLevels.has(authLevel)) {
-		return stringAuthLevels.get(authLevel) as AuthLevels;
-	}
-	throw new Error('Auth Level Unknown');
+	const converted = stringAuthLevels.get(authLevel);
+	if (typeof converted === 'undefined') throw new Error('Auth Level Unknown');
+	return converted;
 }
