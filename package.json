@@ -8,7 +8,7 @@
     "prebuild": "npm run lint",
     "build": "tsc",
     "lint": "eslint src --ext .ts",
-    "test": "npm run build && jest --coverage"
+    "test": "jest --coverage"
   },
   "author": "unicsmcr",
   "license": "MIT",
@@ -30,27 +30,41 @@
     "eslint-config-marine": "^7.1.2",
     "jest": "^26.0.1",
     "ts-jest": "^26.1.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.5"
   },
   "dependencies": {
     "axios": "^0.19.2"
   },
   "eslintConfig": {
-		"extends": "marine/node",
-		"parserOptions": {
-			"project": "tsconfig.eslint.json"
-		},
-		"env": {
-			"jest": true
+    "extends": "marine/node",
+    "parserOptions": {
+      "project": "tsconfig.eslint.json"
+    },
+    "env": {
+      "jest": true
     },
     "rules": {
       "@typescript-eslint/naming-convention": [
         "error",
         {
           "selector": "enumMember",
-          "format": ["PascalCase"]
+          "format": [
+            "PascalCase"
+          ]
         }
       ]
     }
-	}
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/__tests__/fixtures"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.jest.json"
+      }
+    }
+  }
 }

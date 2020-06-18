@@ -1,4 +1,4 @@
-const { convertAuthLevel } = require('../dist/util/authLevel');
+import { convertAuthLevel } from '../util/authLevel';
 
 test('unverified is 0', () => {
 	expect(convertAuthLevel('unverified')).toEqual(0);

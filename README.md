@@ -1,6 +1,7 @@
 # HS_Auth_Client
 
 ![Tests](https://github.com/unicsmcr/hs_auth_client/workflows/Tests/badge.svg)
+![Lint](https://github.com/unicsmcr/hs_auth_client/workflows/Lint/badge.svg)
 
 ## Use
 
