@@ -12,12 +12,16 @@
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": true,
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
     "dist",
     "coverage",
-    "tests"
+    "src/**/*.test.ts",
+		"src/**/*.spec.ts",
+		"src/**/*.test.js",
+		"src/**/*.spec.js"
   ]
 }

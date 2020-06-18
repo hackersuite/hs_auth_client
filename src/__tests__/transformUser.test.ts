@@ -1,11 +1,10 @@
-const { transformUser, transformExtendedUser } = require('../dist/util/transformUser');
-const { sanitiseTeam } = require('../dist/util/sanitiseTeam');
-const { convertAuthLevel } = require('../dist/util/authLevel');
-const fixtures = require('./fixtures/users');
+import { transformUser, transformExtendedUser } from '../util/transformUser';
+import { sanitiseTeam } from '../util/sanitiseTeam';
+import { convertAuthLevel } from '../util/authLevel';
+import { users as fixtures } from './fixtures/users';
 
 test('Users are transformed correctly', () => {
-	for (const fixture of Object.values(fixtures)) {
-		const transformed = transformUser(fixture);
+	for (const fixture of fixtures) {
 		expect(transformUser(fixture)).toEqual({
 			id: fixture._id,
 			name: fixture.name,
@@ -17,8 +16,7 @@ test('Users are transformed correctly', () => {
 });
 
 test('Exended users are transformed correctly', () => {
-	for (const fixture of Object.values(fixtures)) {
-		const transformed = transformUser(fixture);
+	for (const fixture of fixtures) {
 		expect(transformExtendedUser(fixture)).toEqual({
 			...transformUser(fixture),
 			emailVerified: fixture.email_verified

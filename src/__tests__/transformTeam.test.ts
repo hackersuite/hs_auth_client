@@ -1,8 +1,8 @@
-const { transformTeam } = require('../dist/util/transformTeam');
-const fixtures = require('./fixtures/teams');
+import { transformTeam } from '../util/transformTeam';
+import { teams as fixtures } from './fixtures/teams';
 
 test('Team 1 is transformed correctly', () => {
-	const fixture = fixtures.Team1;
+	const fixture = fixtures[0];
 	const transformed = transformTeam(fixture);
 	expect(transformed.id).toEqual(fixture._id);
 	expect(transformed.name).toEqual(fixture.name);
@@ -11,7 +11,7 @@ test('Team 1 is transformed correctly', () => {
 });
 
 test('Team 2 is transformed correctly', () => {
-	const fixture = fixtures.Team2;
+	const fixture = fixtures[1];
 	const transformed = transformTeam(fixture);
 	expect(transformed.id).toEqual(fixture._id);
 	expect(transformed.name).toEqual(fixture.name);

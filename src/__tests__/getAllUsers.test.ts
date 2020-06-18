@@ -1,10 +1,11 @@
 process.env.AUTH_URL = '';
 
-const MockAdapter = require('axios-mock-adapter');
-const axios = require('axios');
-const authClient = require('../');
-const mockUsers = require('./fixtures/users');
-const { transformUser } = require('../dist/util/transformUser');
+import MockAdapter from 'axios-mock-adapter';
+import axios from 'axios';
+import * as authClient from '../';
+import { users as fixtures } from './fixtures/users';
+import { transformUser } from '../util/transformUser';
+import { ExtendedAuthUser } from '../networking';
 
 const mock = new MockAdapter(axios);
 
@@ -13,14 +14,13 @@ afterEach(() => {
 });
 
 // To remove emailVerified field
-function restrict(user) {
-	let copy = { ...user };
-	delete copy['emailVerified'];
+function restrict(user: ExtendedAuthUser) {
+	const copy = { ...user };
+	delete copy.email_verified;
 	return copy;
 }
 
 test('getAllUsers(): 0 users gives empty list', async () => {
-
 	mock.onGet('/api/v1/users').reply(200, {
 		status: 200,
 		error: '',
@@ -32,8 +32,7 @@ test('getAllUsers(): 0 users gives empty list', async () => {
 });
 
 test('getAllUsers(): 1 user gives 1-item list', async () => {
-
-	const fixture = mockUsers.JohnDoe;
+	const fixture = fixtures[0];
 	mock.onGet('/api/v1/users').reply(200, {
 		status: 200,
 		error: '',
@@ -47,33 +46,26 @@ test('getAllUsers(): 1 user gives 1-item list', async () => {
 	expect(users[0]).toEqual(transformUser(restrict(fixture)));
 });
 
-test('getAllUsers(): 2 users gives 2-item list', async () => {
+test('getAllUsers(): multiple users', async () => {
+	const users = fixtures.map(restrict);
 
-	const fixture1 = mockUsers.JohnDoe;
-	const fixture2 = mockUsers.BobRoss;
 	mock.onGet('/api/v1/users').reply(200, {
 		status: 200,
 		error: '',
-		users: [
-			restrict(fixture1),
-			restrict(fixture2)
-		]
+		users
 	});
 
-	const users = await authClient.getAllUsers('token');
-	expect(users.length).toEqual(2);
-	expect(users[0]).toEqual(transformUser(restrict(fixture1)));
-	expect(users[1]).toEqual(transformUser(restrict(fixture2)));
+	const response = await authClient.getAllUsers('token');
+	expect(response).toEqual(users.map(transformUser));
 });
 
-const errorCodes = [400, 500];
-
-for (const errorCode of errorCodes) {
-	test(`getAllUsers(): throws when API response has ${errorCode} error`, async () => {
+test(`getAllUsers(): throws when API response has error code`, async () => {
+	const errorCodes = [400, 500];
+	for (const errorCode of errorCodes) {
 		mock.onGet('/api/v1/users').reply(errorCode, {
 			status: errorCode,
 			error: 'Bad request'
 		});
 		await expect(authClient.getAllUsers('token')).rejects.toThrow();
-	});	
-}
+	}
+});
