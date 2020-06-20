@@ -1,6 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 
-const AUTH_URL = process.env.AUTH_URL ?? '';
+export function getAuthUrl() {
+	return `${process.env.AUTH_URL ?? ''}/api/v1`;
+}
+
+const AUTH_URL = getAuthUrl();
 
 interface AuthResponse {
 	status: number;
@@ -39,7 +43,7 @@ export interface AuthAllTeamsResponse extends AuthResponse {
 }
 
 export async function getCurrentUser(token: string, originalUrl: string): Promise<AxiosResponse<AuthCurrentUserResponse>> {
-	return axios.get(`${AUTH_URL}/api/v1/users/me`, {
+	return axios.get(`${AUTH_URL}/users/me`, {
 		headers: {
 			Authorization: token,
 			Referer: originalUrl
@@ -48,7 +52,7 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
 }
 
 export async function getAllUsers(token: string): Promise<AxiosResponse<AuthAllUsersResponse>> {
-	return axios.get(`${AUTH_URL}/api/v1/users`, {
+	return axios.get(`${AUTH_URL}/users`, {
 		headers: {
 			Authorization: token
 		}
@@ -56,7 +60,7 @@ export async function getAllUsers(token: string): Promise<AxiosResponse<AuthAllU
 }
 
 export async function putCurrentUser(name: string, token: string): Promise<AxiosResponse<AuthResponse>> {
-	return axios.put(`${AUTH_URL}/api/v1/users/me`, {
+	return axios.put(`${AUTH_URL}/users/me`, {
 		headers: {
 			Authorization: token
 		},
@@ -67,7 +71,7 @@ export async function putCurrentUser(name: string, token: string): Promise<Axios
 }
 
 export async function getTeams(token: string): Promise<AxiosResponse<AuthAllTeamsResponse>> {
-	return axios.get(`${AUTH_URL}/api/v1/teams`, {
+	return axios.get(`${AUTH_URL}/teams`, {
 		headers: {
 			Authorization: token
 		}
