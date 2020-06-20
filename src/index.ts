@@ -41,6 +41,17 @@ export async function getUsers(token: string): Promise<User[]> {
 	return res.data.users.map(transformUser);
 }
 
+export async function getUser(token: string, userId: string): Promise<User> {
+	const users = await getUsers(token);
+	const user = users.find(user => user.id === userId);
+
+	if (!user) {
+		throw new Error('User not found');
+	}
+
+	return user;
+}
+
 export async function putCurrentUser(name: string, token: string): Promise<void> {
 	await networking.putCurrentUser(name, token);
 }
