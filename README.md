@@ -37,7 +37,7 @@ npm install @unicsmcr/hs_auth_client
 
 ### Methods
 
-- **getCurrentUser**: (token: string, originalUrl: string) => Promise\<ExtendedUser>
+- **getCurrentUser**: (token: string, originalUrl?: string) => Promise\<ExtendedUser>
 
   > originalUrl can be accessed from req object -> req.originalUrl
 

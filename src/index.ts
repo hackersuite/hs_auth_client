@@ -30,7 +30,7 @@ export interface Team {
 	tableNumber?: number;
 }
 
-export async function getCurrentUser(token: string, originalUrl: string): Promise<ExtendedUser> {
+export async function getCurrentUser(token: string, originalUrl = ''): Promise<ExtendedUser> {
 	const res = await networking.getCurrentUser(token, originalUrl);
 
 	return transformExtendedUser(res.data.user);

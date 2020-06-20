@@ -36,3 +36,32 @@ test(`getCurrentUser(): throws when API response has error code`, async () => {
 		await expect(authClient.getCurrentUser('token', 'url')).rejects.toThrow();
 	}
 });
+
+// Ensures that requests are received with the referer header correctly set
+describe('getCurrentUser() referrer', () => {
+	const user = fixtures[0];
+	const successfulResponse = {
+		status: 200,
+		error: '',
+		user
+	};
+
+	test('unset referrer resolves', async () => {
+		mock.onGet('/api/v1/users/me', {}, expect.objectContaining({
+			Referer: expect.stringMatching('')
+		})).reply(200, successfulResponse);
+
+		expect(await authClient.getCurrentUser('token')).toEqual(transformExtendedUser(user));
+	});
+
+	test('custom string referrer', async () => {
+		for (const referrer of ['http://unicsmcr.com/', 'https://google.com', 'test123', '']) {
+			mock.reset();
+			mock.onGet('/api/v1/users/me', {}, expect.objectContaining({
+				Referer: expect.stringMatching(referrer)
+			})).reply(200, successfulResponse);
+
+			expect(await authClient.getCurrentUser('token', referrer)).toEqual(transformExtendedUser(user));
+		}
+	});
+});
