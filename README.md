@@ -44,7 +44,7 @@ npm install @unicsmcr/hs_auth_client
 - **getAllUsers**: (token: string) => Promise\<User[]>
 - **putCurrentUser**: (name: string, token: string) => Promise\<void>
 - **getTeams**: (token: string) => Promise\<Team[]>;
-- **getTeam**: (token: string, teamCode: string) => Promise\<Team>
+- **getTeam**: (token: string, teamId: string) => Promise\<Team>
 
 Token can be accessed from browser cookies under **Authorization**
 

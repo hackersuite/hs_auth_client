@@ -51,12 +51,12 @@ export async function getTeams(token: string): Promise<Team[]> {
 	return res.data.teams.map(transformTeam);
 }
 
-export async function getTeam(token: string, teamCode: string): Promise<Team> {
-	const allTeams: Team[] = await getTeams(token);
+export async function getTeam(token: string, teamId: string): Promise<Team> {
+	const teams = await getTeams(token);
 
-	const team: Team | undefined = allTeams.find(team => team.id === teamCode);
+	const team = teams.find(team => team.id === teamId);
 
-	if (team === undefined) {
+	if (!team) {
 		throw new Error('Team not found');
 	}
 
