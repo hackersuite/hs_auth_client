@@ -20,18 +20,18 @@ function restrict(user: ExtendedAuthUser) {
 	return copy;
 }
 
-test('getAllUsers(): 0 users gives empty list', async () => {
+test('getUsers(): 0 users gives empty list', async () => {
 	mock.onGet('/api/v1/users').reply(200, {
 		status: 200,
 		error: '',
 		users: []
 	});
 
-	const users = await authClient.getAllUsers('token');
+	const users = await authClient.getUsers('token');
 	expect(users.length).toEqual(0);
 });
 
-test('getAllUsers(): 1 user gives 1-item list', async () => {
+test('getUsers(): 1 user gives 1-item list', async () => {
 	const fixture = fixtures[0];
 	mock.onGet('/api/v1/users').reply(200, {
 		status: 200,
@@ -41,12 +41,12 @@ test('getAllUsers(): 1 user gives 1-item list', async () => {
 		]
 	});
 
-	const users = await authClient.getAllUsers('token');
+	const users = await authClient.getUsers('token');
 	expect(users.length).toEqual(1);
 	expect(users[0]).toEqual(transformUser(restrict(fixture)));
 });
 
-test('getAllUsers(): multiple users', async () => {
+test('getUsers(): multiple users', async () => {
 	const users = fixtures.map(restrict);
 
 	mock.onGet('/api/v1/users').reply(200, {
@@ -55,17 +55,17 @@ test('getAllUsers(): multiple users', async () => {
 		users
 	});
 
-	const response = await authClient.getAllUsers('token');
+	const response = await authClient.getUsers('token');
 	expect(response).toEqual(users.map(transformUser));
 });
 
-test(`getAllUsers(): throws when API response has error code`, async () => {
+test(`getUsers(): throws when API response has error code`, async () => {
 	const errorCodes = [400, 500];
 	for (const errorCode of errorCodes) {
 		mock.onGet('/api/v1/users').reply(errorCode, {
 			status: errorCode,
 			error: 'Bad request'
 		});
-		await expect(authClient.getAllUsers('token')).rejects.toThrow();
+		await expect(authClient.getUsers('token')).rejects.toThrow();
 	}
 });

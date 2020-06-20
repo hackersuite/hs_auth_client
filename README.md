@@ -41,7 +41,7 @@ npm install @unicsmcr/hs_auth_client
 
   > originalUrl can be accessed from req object -> req.originalUrl
 
-- **getAllUsers**: (token: string) => Promise\<User[]>
+- **getUsers**: (token: string) => Promise\<User[]>
 - **putCurrentUser**: (name: string, token: string) => Promise\<void>
 - **getTeams**: (token: string) => Promise\<Team[]>;
 - **getTeam**: (token: string, teamId: string) => Promise\<Team>

@@ -36,8 +36,8 @@ export async function getCurrentUser(token: string, originalUrl = ''): Promise<E
 	return transformExtendedUser(res.data.user);
 }
 
-export async function getAllUsers(token: string): Promise<User[]> {
-	const res = await networking.getAllUsers(token);
+export async function getUsers(token: string): Promise<User[]> {
+	const res = await networking.getUsers(token);
 	return res.data.users.map(transformUser);
 }
 

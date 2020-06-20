@@ -51,7 +51,7 @@ export async function getCurrentUser(token: string, originalUrl: string): Promis
 	});
 }
 
-export async function getAllUsers(token: string): Promise<AxiosResponse<AuthAllUsersResponse>> {
+export async function getUsers(token: string): Promise<AxiosResponse<AuthAllUsersResponse>> {
 	return axios.get(`${AUTH_URL}/users`, {
 		headers: {
 			Authorization: token
