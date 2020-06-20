@@ -38,13 +38,6 @@ export interface AuthAllTeamsResponse extends AuthResponse {
 	teams: AuthTeam[];
 }
 
-export function handleError<T extends AxiosResponse>(res: T): T {
-	if (res.status >= 400 || res.data.status >= 400 || res.data.error) {
-		throw new Error(res.data.error);
-	}
-	return res;
-}
-
 export async function getCurrentUser(token: string, originalUrl: string): Promise<AxiosResponse<AuthCurrentUserResponse>> {
 	return axios.get(`${AUTH_URL}/api/v1/users/me`, {
 		headers: {

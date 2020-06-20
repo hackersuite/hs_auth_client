@@ -31,22 +31,22 @@ export interface Team {
 }
 
 export async function getCurrentUser(token: string, originalUrl: string): Promise<ExtendedUser> {
-	const res = networking.handleError(await networking.getCurrentUser(token, originalUrl));
+	const res = await networking.getCurrentUser(token, originalUrl);
 
 	return transformExtendedUser(res.data.user);
 }
 
 export async function getAllUsers(token: string): Promise<User[]> {
-	const res = networking.handleError(await networking.getAllUsers(token));
+	const res = await networking.getAllUsers(token);
 	return res.data.users.map(transformUser);
 }
 
 export async function putCurrentUser(name: string, token: string): Promise<void> {
-	networking.handleError(await networking.putCurrentUser(name, token));
+	await networking.putCurrentUser(name, token);
 }
 
 export async function getTeams(token: string): Promise<Team[]> {
-	const res = networking.handleError(await networking.getTeams(token));
+	const res = await networking.getTeams(token);
 
 	return res.data.teams.map(transformTeam);
 }
