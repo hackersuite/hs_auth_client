@@ -6,6 +6,6 @@ export function transformTeam(raw: AuthTeam): Team {
 		id: raw._id,
 		creator: raw.creator,
 		name: raw.name,
-		tableNumber: raw.table_no ? raw.table_no : undefined
+		tableNumber: raw.table_no ?? undefined
 	};
 }
