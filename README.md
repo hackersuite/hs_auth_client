@@ -4,6 +4,9 @@ A client for the [Hacker Suite Auth API](https://github.com/unicsmcr/hs_auth).
 
 ![Tests](https://github.com/unicsmcr/hs_auth_client/workflows/Tests/badge.svg)
 ![Lint](https://github.com/unicsmcr/hs_auth_client/workflows/Lint/badge.svg)
+[![codecov](https://codecov.io/gh/unicsmcr/hs_auth_client/branch/master/graph/badge.svg)](https://codecov.io/gh/unicsmcr/hs_auth_client)
+
+
 
 ## Installation
 
