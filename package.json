@@ -25,9 +25,9 @@
 		"@types/node": "^13.7.6",
 		"@typescript-eslint/eslint-plugin": "^3.3.0",
 		"@typescript-eslint/parser": "^3.3.0",
+		"@unicsmcr/eslint-config": "^0.0.1",
 		"axios-mock-adapter": "^1.18.1",
 		"eslint": "^7.2.0",
-		"eslint-config-marine": "^7.1.2",
 		"jest": "^26.0.1",
 		"ts-jest": "^26.1.0",
 		"typescript": "^3.9.5"
@@ -36,23 +36,12 @@
 		"axios": "^0.19.2"
 	},
 	"eslintConfig": {
-		"extends": "marine/node",
+		"extends": "@unicsmcr",
 		"parserOptions": {
 			"project": "tsconfig.eslint.json"
 		},
 		"env": {
 			"jest": true
-		},
-		"rules": {
-			"@typescript-eslint/naming-convention": [
-				"error",
-				{
-					"selector": "enumMember",
-					"format": [
-						"PascalCase"
-					]
-				}
-			]
 		}
 	},
 	"jest": {
