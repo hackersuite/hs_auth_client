@@ -3,7 +3,7 @@ process.env.AUTH_URL = '';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import * as authClient from '..';
-import { teamMembers } from './fixtures/teamMembers';
+import { teamsWithMembers } from './fixtures/teamMembers';
 import { transformUser } from '../util/transformUser';
 
 const mock = new MockAdapter(axios);
@@ -11,13 +11,13 @@ const mock = new MockAdapter(axios);
 mock.onGet('/api/v1/teams/123/members').reply(200, {
 	status: 200,
 	error: '',
-	users: teamMembers[0]
+	users: teamsWithMembers[0]
 });
 
 mock.onGet('/api/v1/teams/456/members').reply(200, {
 	status: 200,
 	error: '',
-	users: teamMembers[1]
+	users: teamsWithMembers[1]
 });
 
 mock.onGet('/api/v1/teams/789/members').reply(200, {
@@ -33,9 +33,9 @@ mock.onGet('/api/v1/teams/000000000000000000000000/members').reply(200, {
 });
 
 describe('getTeamMembers(): fetches members and transforms them', () => {
-	for (const team of teamMembers) {
-		test(`${team.length} users`, async () => {
-			expect(await authClient.getTeamMembers('token', team[0].team)).toEqual(team.map(transformUser));
+	for (const teamMembers of teamsWithMembers) {
+		test(`${teamMembers.length} users`, async () => {
+			expect(await authClient.getTeamMembers('token', teamMembers[0].team)).toEqual(teamMembers.map(transformUser));
 		});
 	}
 });

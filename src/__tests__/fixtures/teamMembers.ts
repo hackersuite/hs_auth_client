@@ -2,7 +2,7 @@ import { AuthUser } from '../../networking';
 
 export type TeamMembers = AuthUser[];
 
-export const teamMembers: TeamMembers[] = [
+export const teamsWithMembers: TeamMembers[] = [
 	// 2-person team
 	[
 		{
