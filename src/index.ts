@@ -73,3 +73,8 @@ export async function getTeam(token: string, teamId: string): Promise<Team> {
 
 	return team;
 }
+
+export async function getTeamMembers(token: string, teamId: string): Promise<User[]> {
+	const res = await networking.getTeamMembers(token, teamId);
+	return (res.data.users ?? []).map(transformUser);
+}

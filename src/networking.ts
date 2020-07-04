@@ -42,6 +42,11 @@ export interface AuthAllTeamsResponse extends AuthResponse {
 	teams: AuthTeam[];
 }
 
+export interface AuthTeamMembersResponse extends AuthResponse {
+	// When fetching with id 000000000000000000000000, the request succeeds with users set as null
+	users: null|AuthUser[];
+}
+
 export async function getCurrentUser(token: string, originalUrl: string): Promise<AxiosResponse<AuthCurrentUserResponse>> {
 	return axios.get(`${AUTH_URL}/users/me`, {
 		headers: {
@@ -72,6 +77,14 @@ export async function putCurrentUser(name: string, token: string): Promise<Axios
 
 export async function getTeams(token: string): Promise<AxiosResponse<AuthAllTeamsResponse>> {
 	return axios.get(`${AUTH_URL}/teams`, {
+		headers: {
+			Authorization: token
+		}
+	});
+}
+
+export async function getTeamMembers(token: string, teamId: string): Promise<AxiosResponse<AuthTeamMembersResponse>> {
+	return axios.get(`${AUTH_URL}/teams/${teamId}/members`, {
 		headers: {
 			Authorization: token
 		}
