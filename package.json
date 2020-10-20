@@ -1,6 +1,6 @@
 {
 	"name": "@unicsmcr/hs_auth_client",
-	"version": "2.1.0",
+	"version": "3.0.0",
 	"description": "API request paths for hs_auth platform",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
