@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 export function getAuthUrl() {
-	return `${process.env.AUTH_URL ?? ''}/api/v1`;
+	return `${process.env.AUTH_URL ?? ''}/api/v2`;
 }
 
 const AUTH_URL = getAuthUrl();
@@ -15,12 +15,9 @@ export interface AuthUser {
 	_id: string;
 	name: string;
 	email: string;
-	auth_level: string;
+	role: string;
 	team: string;
-}
-
-export interface ExtendedAuthUser extends AuthUser {
-	email_verified: boolean;
+	special_permissions?: string[];
 }
 
 export interface AuthTeam {
@@ -30,8 +27,12 @@ export interface AuthTeam {
 	table_no?: number;
 }
 
-export interface AuthCurrentUserResponse extends AuthResponse {
-	user: ExtendedAuthUser;
+export interface AuthUserResponse extends AuthResponse {
+	user: AuthUser;
+}
+
+export interface AuthTeamResponse extends AuthResponse {
+	team: AuthTeam;
 }
 
 export interface AuthAllUsersResponse extends AuthResponse {
@@ -43,34 +44,38 @@ export interface AuthAllTeamsResponse extends AuthResponse {
 }
 
 export interface AuthTeamMembersResponse extends AuthResponse {
-	// When fetching with id 000000000000000000000000, the request succeeds with users set as null
-	users: null|AuthUser[];
+	users: AuthUser[];
 }
 
-export async function getCurrentUser(token: string, originalUrl: string): Promise<AxiosResponse<AuthCurrentUserResponse>> {
-	return axios.get(`${AUTH_URL}/users/me`, {
-		headers: {
-			Authorization: token,
-			Referer: originalUrl
-		}
-	});
+export interface AuthResourcesResponse extends AuthResponse {
+	authorizedURIs: string[];
 }
 
-export async function getUsers(token: string): Promise<AxiosResponse<AuthAllUsersResponse>> {
-	return axios.get(`${AUTH_URL}/users`, {
+export async function getUser(token: string, userId: string): Promise<AxiosResponse<AuthUserResponse>> {
+	return axios.get(`${AUTH_URL}/users/${userId}`, {
 		headers: {
 			Authorization: token
 		}
 	});
 }
 
-export async function putCurrentUser(name: string, token: string): Promise<AxiosResponse<AuthResponse>> {
-	return axios.put(`${AUTH_URL}/users/me`, {
+export async function getUsers(token: string, teamIdFilter?: string): Promise<AxiosResponse<AuthAllUsersResponse>> {
+	let teamQuery = '';
+	if (teamIdFilter) {
+		teamQuery = `?team=${teamIdFilter}`;
+	}
+
+	return axios.get(`${AUTH_URL}/users${teamQuery}`, {
 		headers: {
 			Authorization: token
-		},
-		body: {
-			name
+		}
+	});
+}
+
+export async function getTeam(token: string, teamId: string): Promise<AxiosResponse<AuthTeamResponse>> {
+	return axios.get(`${AUTH_URL}/teams/${teamId}`, {
+		headers: {
+			Authorization: token
 		}
 	});
 }
@@ -83,8 +88,20 @@ export async function getTeams(token: string): Promise<AxiosResponse<AuthAllTeam
 	});
 }
 
-export async function getTeamMembers(token: string, teamId: string): Promise<AxiosResponse<AuthTeamMembersResponse>> {
-	return axios.get(`${AUTH_URL}/teams/${teamId}/members`, {
+export async function setRole(token: string, userId: string, role: string): Promise<AxiosResponse<AuthResponse>> {
+	return axios.put(`${AUTH_URL}/users/${userId}/role`, {
+		headers: {
+			'Authorization': token,
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		data: {
+			role: role
+		}
+	});
+}
+
+export async function getAuthorizedResources(token: string, requestedResources: Array<string>): Promise<AxiosResponse<AuthResourcesResponse>> {
+	return axios.get(`${AUTH_URL}/tokens/resources/authorized?from=${JSON.stringify(requestedResources)}`, {
 		headers: {
 			Authorization: token
 		}
