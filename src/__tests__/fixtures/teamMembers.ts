@@ -9,14 +9,12 @@ export const teamsWithMembers: TeamMembers[] = [
 			_id: '123456',
 			name: 'John Doe',
 			email: 'johndoe@gmail.com',
-			auth_level: 'attendee',
 			team: '123'
 		},
 		{
 			_id: '1a2b3c4d5e',
 			name: 'Bob Ross',
 			email: 'bobross@outlook.com',
-			auth_level: 'attendee',
 			team: '123'
 		}
 	],
@@ -26,7 +24,6 @@ export const teamsWithMembers: TeamMembers[] = [
 			_id: '34646573456',
 			name: 'Kilburn',
 			email: 'kilburn@gmail.com',
-			auth_level: 'attendee',
 			team: '456'
 		}
 	]

@@ -8,20 +8,29 @@ import { transformTeam } from '../util/transformTeam';
 
 const mock = new MockAdapter(axios);
 
-mock.onGet('/api/v1/teams').reply(200, {
-	status: 200,
-	error: '',
-	teams: fixtures
+let authApi: authClient.AuthApi;
+beforeAll(() => {
+	authApi = new authClient.AuthApi('hs_test');
 });
 
 test('getTeam(): fetches and transforms teams correctly', async () => {
 	for (const fixture of fixtures) {
-		const team = await authClient.getTeam('token', fixture._id);
+		mock.onGet(`/api/v2/teams/${fixture._id}`).reply(200, {
+			status: 200,
+			error: '',
+			team: fixture
+		});
+
+		const team = await authApi.getTeam('token', fixture._id);
 		expect(team).toEqual(transformTeam(fixture));
 	}
 });
 
+mock.onGet(`/api/v2/teams/MissingNo.`).reply(404, {
+	status: 404,
+	error: ''
+});
+
 test('getTeam(): throws for non-existent team', async () => {
-	await expect(authClient.getTeam('token', 'MissingNo.')).rejects.toThrow();
-	await expect(authClient.getTeam('token', '')).rejects.toThrow();
+	await expect(authApi.getTeam('token', 'MissingNo.')).rejects.toThrow();
 });

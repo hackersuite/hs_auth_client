@@ -23,13 +23,7 @@ npm install @unicsmcr/hs_auth_client
 - `id`: string
 - `name`: string
 - `email`: string
-- `authLevel`: AuthLevel
 - `team?`: string
-
-**ExtendedUser**
-
-- All the properties of `User`, as well as:
-- `emailVerified`: boolean
 
 **Team**
 
@@ -39,19 +33,28 @@ npm install @unicsmcr/hs_auth_client
 - `tableNumber?`: number
 
 ### Methods
-
-- **getCurrentUser**: (token: string, originalUrl?: string) => Promise\<ExtendedUser>
-
-  > originalUrl can be accessed from req object -> req.originalUrl
-
-- **getUsers**: (token: string) => Promise\<User[]>
-- **getUser**: (token: string, userId: string) => Promise\<User>
-- **putCurrentUser**: (name: string, token: string) => Promise\<void>
+- **getCurrentUser**: (token: string) => Promise\<User>;
+- **getUser**: (token: string, userId: string) => Promise\<User>;
+- **getUsers**: (token: string) => Promise\<User[]>;
+- **getCurrentTeam**: (token: string) => Promise\<Team>;
+- **getTeam**: (token: string, teamId: string) => Promise\<Team>;
+- **getTeamMembers**: (token: string, teamId: string) => Promise\<User[]>;
 - **getTeams**: (token: string) => Promise\<Team[]>;
-- **getTeam**: (token: string, teamId: string) => Promise\<Team>
-- **getTeamMembers**: (token: string, teamId: string) => Promise\<User[]>
+- **setRole**: (token: string, role: string, userId: string) => Promise\<boolean>;
+- **getAuthorizedResources**: (token: string, from: Array\<string>) => Promise\<Array\<string>>;
+- **newUri**: (path: string, args: Map\<string, string>) => string;
 
 Token can be accessed from browser cookies under **Authorization**
+
+### Usage
+```typescript
+import { AuthApi } from '@unicsmcr/hs_auth_client';
+
+const authApi = new AuthApi('hs_service');
+
+const allUsers = await authApi.getUsers(token);
+const user = await authApi.getCurrentUser(token);
+```
 
 ## License
 

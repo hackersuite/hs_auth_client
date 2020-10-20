@@ -1,26 +1,12 @@
 import * as networking from './networking';
-import { transformUser, transformExtendedUser } from './util/transformUser';
+import { transformUser } from './util/transformUser';
 import { transformTeam } from './util/transformTeam';
-
-export const enum AuthLevel {
-	// NOTE: the auth levels must be in ascending order
-	Unverified,
-	Applicant,
-	Attendee,
-	Volunteer,
-	Organiser
-}
 
 export interface User {
 	id: string;
 	name: string;
 	email: string;
-	authLevel: AuthLevel;
 	team?: string;
-}
-
-export interface ExtendedUser extends User {
-	emailVerified: boolean;
 }
 
 export interface Team {
@@ -30,51 +16,100 @@ export interface Team {
 	tableNumber?: number;
 }
 
-export async function getCurrentUser(token: string, originalUrl = ''): Promise<ExtendedUser> {
-	const res = await networking.getCurrentUser(token, originalUrl);
-
-	return transformExtendedUser(res.data.user);
+export interface AuthApiInterface {
+	getCurrentUser(token: string): Promise<User>;
+	getUser(token: string, userId: string): Promise<User>;
+	getUsers(token: string): Promise<User[]>;
+	getCurrentTeam(token: string): Promise<Team>;
+	getTeam(token: string, teamId: string): Promise<Team>;
+	getTeamMembers(token: string, teamId: string): Promise<User[]>;
+	getTeams(token: string): Promise<Team[]>;
+	setRole(token: string, role: string, userId: string): Promise<boolean>;
+	getAuthorizedResources(token: string, from: Array<string>): Promise<Array<string>>;
+	newUri(path: string, args: Map<string, string>): string;
 }
 
-export async function getUsers(token: string): Promise<User[]> {
-	const res = await networking.getUsers(token);
-	return res.data.users.map(transformUser);
-}
+export class AuthApi implements AuthApiInterface {
+	private readonly _serviceName: string;
 
-export async function getUser(token: string, userId: string): Promise<User> {
-	const users = await getUsers(token);
-	const user = users.find(user => user.id === userId);
-
-	if (!user) {
-		throw new Error('User not found');
+	public constructor(serviceName: string) {
+		this._serviceName = serviceName;
 	}
 
-	return user;
-}
-
-export async function putCurrentUser(name: string, token: string): Promise<void> {
-	await networking.putCurrentUser(name, token);
-}
-
-export async function getTeams(token: string): Promise<Team[]> {
-	const res = await networking.getTeams(token);
-
-	return res.data.teams.map(transformTeam);
-}
-
-export async function getTeam(token: string, teamId: string): Promise<Team> {
-	const teams = await getTeams(token);
-
-	const team = teams.find(team => team.id === teamId);
-
-	if (!team) {
-		throw new Error('Team not found');
+	public async getCurrentUser(token: string): Promise<User> {
+		const res = await networking.getUser(token, 'me');
+		return transformUser(res.data.user);
 	}
 
-	return team;
+
+	public async getUser(token: string, userId: string): Promise<User> {
+		const res = await networking.getUser(token, userId);
+		return transformUser(res.data.user);
+	}
+
+	public async getUsers(token: string): Promise<User[]> {
+		const res = await networking.getUsers(token);
+		return res.data.users.map(transformUser);
+	}
+
+	public async getCurrentTeam(token: string): Promise<Team> {
+		const res = await networking.getTeam(token, 'me');
+		return transformTeam(res.data.team);
+	}
+
+	public async getTeam(token: string, teamId: string): Promise<Team> {
+		const res = await networking.getTeam(token, teamId);
+		return transformTeam(res.data.team);
+	}
+
+	public async getTeamMembers(token: string, teamId: string): Promise<User[]> {
+		const res = await networking.getUsers(token, teamId);
+		return res.data.users.map(transformUser);
+	}
+
+	public async getTeams(token: string): Promise<Team[]> {
+		const res = await networking.getTeams(token);
+		return res.data.teams.map(transformTeam);
+	}
+
+	public async setRole(token: string, role: string, userId: string): Promise<boolean> {
+		const res = await networking.setRole(token, userId, role);
+		return res.data.status === 200;
+	}
+
+	public async getAuthorizedResources(token: string, from: Array<string>): Promise<Array<string>> {
+		const res = await networking.getAuthorizedResources(token, from);
+		return res.data.authorizedURIs;
+	}
+
+	public newUri(path: string, args?: Map<string, string>): string {
+		return `hs:${this._serviceName}:${path}${this.parseRequestArguments(args)}`;
+	}
+
+	private parseRequestArguments(args?: Map<string, string>): string {
+		if (args === undefined) {
+			return '';
+		}
+
+		const parts = [];
+		for (const [key, val] of args) {
+			if (val === '' || typeof val === 'undefined') {
+				continue;
+			}
+
+			parts.push(`${key}=${encode(val)}`);
+		}
+
+		return (parts.length > 0 ? '?' : '') + parts.join('&');
+	}
 }
 
-export async function getTeamMembers(token: string, teamId: string): Promise<User[]> {
-	const res = await networking.getTeamMembers(token, teamId);
-	return (res.data.users ?? []).map(transformUser);
+function encode(val: string): string {
+	return encodeURIComponent(val)
+		.replace(/%3A/gi, ':')
+		.replace(/%24/g, '$')
+		.replace(/%2C/gi, ',')
+		.replace(/%20/g, '+')
+		.replace(/%5B/gi, '[')
+		.replace(/%5D/gi, ']');
 }
