@@ -15,7 +15,7 @@ test('getAuthorizedResources(): get authorized resources correctly', async () =>
 	mock.onGet(`/api/v2/tokens/resources/authorized?from=["hs:test"]`).reply(200, {
 		status: 200,
 		error: '',
-		authorizedURIs: ['hs:test']
+		authorizedUris: ['hs:test']
 	});
 
 	const response = await authApi.getAuthorizedResources('token', ['hs:test']);
