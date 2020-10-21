@@ -47,7 +47,7 @@ export interface AuthTeamMembersResponse extends AuthResponse {
 }
 
 export interface AuthResourcesResponse extends AuthResponse {
-	authorizedURIs: string[];
+	authorizedUris: string[];
 }
 
 export async function getUser(token: string, userId: string): Promise<AxiosResponse<AuthUserResponse>> {

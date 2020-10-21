@@ -79,7 +79,7 @@ export class AuthApi implements AuthApiInterface {
 
 	public async getAuthorizedResources(token: string, from: Array<string>): Promise<Array<string>> {
 		const res = await networking.getAuthorizedResources(token, from);
-		return res.data.authorizedURIs;
+		return res.data.authorizedUris;
 	}
 
 	public newUri(path: string, args?: Map<string, string>): string {
