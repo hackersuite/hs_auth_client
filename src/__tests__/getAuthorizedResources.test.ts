@@ -22,6 +22,17 @@ test('getAuthorizedResources(): get authorized resources correctly', async () =>
 	expect(response).toEqual(['hs:test']);
 });
 
+test('getAuthorizedResources(): get authorized resources correctly for user', async () => {
+	mock.onGet(`/api/v2/tokens/resources/authorized?from=["hs:test"]&user=123abc`).reply(200, {
+		status: 200,
+		error: '',
+		authorizedUris: ['hs:test']
+	});
+
+	const response = await authApi.getAuthorizedResources('token', ['hs:test'], '123abc');
+	expect(response).toEqual(['hs:test']);
+});
+
 test(`getAuthorizedResources(): throws when API response has error code`, async () => {
 	const errorCodes = [400, 401, 404, 500];
 
