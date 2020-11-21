@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import querystring from 'querystring';
 
 export function getAuthUrl() {
 	return `${process.env.AUTH_URL ?? ''}/api/v2`;
@@ -88,13 +89,10 @@ export async function getTeams(token: string): Promise<AxiosResponse<AuthAllTeam
 }
 
 export async function setRole(token: string, userId: string, role: string): Promise<AxiosResponse<AuthResponse>> {
-	return axios.put(`${AUTH_URL}/users/${userId}/role`, {
+	return axios.put(`${AUTH_URL}/users/${userId}/role`, querystring.stringify({ role: role }), {
 		headers: {
 			'Authorization': token,
 			'Content-Type': 'application/x-www-form-urlencoded'
-		},
-		data: {
-			role: role
 		}
 	});
 }
