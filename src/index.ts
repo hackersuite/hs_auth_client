@@ -77,8 +77,8 @@ export class AuthApi implements AuthApiInterface {
 		return res.data.status === 200;
 	}
 
-	public async getAuthorizedResources(token: string, from: Array<string>): Promise<Array<string>> {
-		const res = await networking.getAuthorizedResources(token, from);
+	public async getAuthorizedResources(token: string, from: Array<string>, user?: string): Promise<Array<string>> {
+		const res = await networking.getAuthorizedResources(token, from, user);
 		return res.data.authorizedUris;
 	}
 

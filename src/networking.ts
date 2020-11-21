@@ -97,8 +97,12 @@ export async function setRole(token: string, userId: string, role: string): Prom
 	});
 }
 
-export async function getAuthorizedResources(token: string, requestedResources: Array<string>): Promise<AxiosResponse<AuthResourcesResponse>> {
-	return axios.get(`${AUTH_URL}/tokens/resources/authorized?from=${JSON.stringify(requestedResources)}`, {
+export async function getAuthorizedResources(token: string, requestedResources: Array<string>, user?: string): Promise<AxiosResponse<AuthResourcesResponse>> {
+	let url = `${AUTH_URL}/tokens/resources/authorized?from=${JSON.stringify(requestedResources)}`;
+	if (user) {
+		url += `&user=${user}`;
+	}
+	return axios.get(url, {
 		headers: {
 			Authorization: token
 		}
